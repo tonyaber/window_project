@@ -1,32 +1,45 @@
 const modals = () => {
-    function bindModal(trigger, modal, close) {
-        trigger.addEventListener('click', (evt) => {
-            if (evt.target) {
-                evt.preventDefault;
-            }
+    function bindModal(triggerSelector, modalSelector, closeSelector) {
+        const trigger = document.querySelectorAll(triggerSelector),
+            modal = document.querySelector(modalSelector),
+            close = document.querySelector(closeSelector);
+        
+        trigger.forEach(item => {
+            item.addEventListener('click', (evt) => {
+                if (evt.target) {
+                    evt.preventDefault();
+                }
 
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
 
-        });
+            });
+        })
         close.addEventListener('click', () => {
             modal.style.display = 'none';
             document.body.style.overflow = '';
         });
 
         modal.addEventListener('click', (evt) => {
-            if (evt.target === modal) {
+            if(evt.target===modal){
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
             }
         })
     }
 
-    const callEngineerBtn = document.querySelector('.popup_engineer_btn'),
-        modalEngineer = document.querySelector('.popup_engineer'),
-        modalEngineerClose = document.querySelector('.popup_engineer .popup_close');
+    function showModalByTime(selector, time) {
+        setTimeout(()=>{
+            document.querySelector(selector).style.display = 'block';
+            document.body.style.overflow = '';
+        }, time)
+    }
     
-    bindModal(callEngineerBtn, modalEngineer, modalEngineerClose);
+    bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
+    bindModal('.phone_link', '.popup', '.popup .popup_close');
+
+    showModalByTime('.popup', 50000);
+    
 };
 
 export default modals;
