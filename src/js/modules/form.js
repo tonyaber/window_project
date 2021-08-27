@@ -1,6 +1,13 @@
 const forms = () => {
     const form = document.querySelectorAll('form'),
-        inputs = document.querySelectorAll('input');
+        inputs = document.querySelectorAll('input'),
+        phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+    
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', () => {
+            input.value = input.value.replace(/\D/,'');
+        })
+    })
     
     const message = {
         loading: 'Загрузка...',
@@ -30,19 +37,15 @@ const forms = () => {
             const formData = new FormData(item);
             postData('assets/server.php', formData)
                 .then(res => {
-                    console.log(res);
                     statusMessage.textContent = message.success;
                 })
                 .catch(() => statusMessage.textContent = message.failure)
-                .finnally(() => {
+                .finally(() => {
                     clearInputs();
                     setTimeout(() => statusMessage.remove(), 5000);
-            })
-            
-            
+            })      
         })
     })
-
 };
 
 export default forms;
