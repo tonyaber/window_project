@@ -1,14 +1,12 @@
-const forms = () => {
+import checkNumInputs from './checkNumInputs';
+
+const forms = (state) => {
     const form = document.querySelectorAll('form'),
         inputs = document.querySelectorAll('input'),
-        phoneInputs = document.querySelectorAll('input[name="user_phone"]');
-    
-    phoneInputs.forEach(input => {
-        input.addEventListener('input', () => {
-            input.value = input.value.replace(/\D/,'');
-        })
-    })
-    
+        modals = document.querySelectorAll('[data-modal]');
+
+    checkNumInputs('input[name="user_phone"]');
+
     const message = {
         loading: 'Загрузка...',
         success: 'Спасибо! Скоро мы с вами свяжемся',
@@ -26,8 +24,8 @@ const forms = () => {
     };
 
     const clearInputs = () => inputs.forEach(input => input.value = '');
-    
-    form.forEach(item => {
+
+    form.forEach((item, index) => {
         item.addEventListener('submit', (evt) => {
             evt.preventDefault();
             let statusMessage = document.createElement('div');
@@ -35,6 +33,13 @@ const forms = () => {
             item.appendChild(statusMessage);
 
             const formData = new FormData(item);
+
+            if (item.getAttribute('data-calc') === 'end') {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
+
             postData('assets/server.php', formData)
                 .then(res => {
                     statusMessage.textContent = message.success;
@@ -42,8 +47,20 @@ const forms = () => {
                 .catch(() => statusMessage.textContent = message.failure)
                 .finally(() => {
                     clearInputs();
-                    setTimeout(() => statusMessage.remove(), 5000);
-            })      
+                    setTimeout(() => {
+                        statusMessage.remove();
+                        modals.forEach(item => item.style.display = 'none');
+                        document.body.style.overflow = '';
+
+                    }, 5000);
+                    state = Object.assign(state, {
+                        form: 1,
+                        type: "tree",
+                        hight: "",
+                        width: "",
+                        profil: ""
+                    })
+                })
         })
     })
 };
