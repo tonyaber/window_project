@@ -4,7 +4,7 @@ const modals = () => {
             modal = document.querySelector(modalSelector),
             close = document.querySelector(closeSelector),
             windows = document.querySelectorAll('[data-modal]');
-        
+
         trigger.forEach(item => {
             item.addEventListener('click', (evt) => {
                 if (evt.target) {
@@ -12,7 +12,6 @@ const modals = () => {
                 }
 
                 windows.forEach(item => item.style.display = 'none');
-
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
 
@@ -35,12 +34,12 @@ const modals = () => {
     }
 
     function showModalByTime(selector, time) {
-        setTimeout(()=>{
+        setTimeout(() => {
             document.querySelector(selector).style.display = 'block';
             document.body.style.overflow = '';
         }, time)
     }
-    
+
     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
     bindModal('.phone_link', '.popup', '.popup .popup_close');
     bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close');
@@ -48,7 +47,7 @@ const modals = () => {
     bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
 
     showModalByTime('.popup', 50000);
-    
+
 };
 
 export default modals;

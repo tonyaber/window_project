@@ -5,7 +5,10 @@ import forms from './modules/form';
 import changeModalState from './modules/changeModalState';
 
 window.addEventListener('DOMContentLoaded', () => {
-    let modalState = {};
+    let modalState = {
+        form: 1,
+        type: "tree",
+    };
 
     changeModalState(modalState);
     modals();

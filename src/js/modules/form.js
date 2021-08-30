@@ -2,7 +2,8 @@ import checkNumInputs from './checkNumInputs';
 
 const forms = (state) => {
     const form = document.querySelectorAll('form'),
-        inputs = document.querySelectorAll('input');
+        inputs = document.querySelectorAll('input'),
+        modals = document.querySelectorAll('[data-modal]');
 
     checkNumInputs('input[name="user_phone"]');
 
@@ -24,7 +25,7 @@ const forms = (state) => {
 
     const clearInputs = () => inputs.forEach(input => input.value = '');
 
-    form.forEach(item => {
+    form.forEach((item, index) => {
         item.addEventListener('submit', (evt) => {
             evt.preventDefault();
             let statusMessage = document.createElement('div');
@@ -46,7 +47,19 @@ const forms = (state) => {
                 .catch(() => statusMessage.textContent = message.failure)
                 .finally(() => {
                     clearInputs();
-                    setTimeout(() => statusMessage.remove(), 5000);
+                    setTimeout(() => {
+                        statusMessage.remove();
+                        modals.forEach(item => item.style.display = 'none');
+                        document.body.style.overflow = '';
+
+                    }, 5000);
+                    state = Object.assign(state, {
+                        form: 1,
+                        type: "tree",
+                        hight: "",
+                        width: "",
+                        profil: ""
+                    })
                 })
         })
     })
